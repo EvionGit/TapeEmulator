@@ -1,4 +1,4 @@
-#include "TapeMapping.h"
+#include "../include/TapeMapping.h"
 
 size_t TapeMapping::load_from_file(FILE* from, Tape* to)
 {

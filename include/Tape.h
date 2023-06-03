@@ -10,7 +10,6 @@
 #include<chrono>
 #include<thread>
 
-#pragma warning(disable: 4996)
 
 #define BLOCKLEN 13 // block len in file (11 chars for INT32 value + 2 for delimeters)
 
@@ -20,17 +19,16 @@ class Tape : public ITape
 
 private:
     FILE* f;
-    struct stat meta;
     int io_delay, re_delay, shift_delay;
 
 private:
-    Tape(FILE* f, std::map<std::string, std::string>* conf);
+    Tape(FILE* f, std::map<std::string, std::string>& conf);
     ~Tape();
 
 
 public:
     /* open tape context */
-    static Tape* open_tape(const char* filename, const char* mode, std::map<std::string, std::string>* conf = 0);
+    static Tape* open_tape(const char* filename, const char* mode, std::map<std::string, std::string>& conf);
     
     /* close tape context */
     static void close_tape(Tape* tape);

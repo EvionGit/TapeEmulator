@@ -1,15 +1,14 @@
-#include "Tape.h"
+#include "../include/Tape.h"
 
 
-Tape::Tape(FILE* f, std::map<std::string, std::string>* conf) : f(f), io_delay(0),re_delay(0),shift_delay(0)
+Tape::Tape(FILE* f, std::map<std::string, std::string>& conf) : f(f), io_delay(0),re_delay(0),shift_delay(0)
 {
     /* set configs if exist */
-    fstat(fileno(f), &meta);
-    if (conf)
+    if (!conf.empty())
     {
-        io_delay = atoi(conf->at("IO_DELAY").c_str());
-        re_delay = atoi(conf->at("RE_DELAY").c_str());
-        shift_delay = atoi(conf->at("SHIFT_DELAY").c_str());
+        io_delay = atoi(conf.at("IO_DELAY").c_str());
+        re_delay = atoi(conf.at("RE_DELAY").c_str());
+        shift_delay = atoi(conf.at("SHIFT_DELAY").c_str());
     }
 }
 
@@ -18,7 +17,7 @@ Tape::~Tape()
     fclose(f);
 }
 
-Tape* Tape::open_tape(const char* filename, const char* mode, std::map<std::string, std::string>* conf)
+Tape* Tape::open_tape(const char* filename, const char* mode, std::map<std::string, std::string>& conf)
 {
     /* returns pointer to Tape or 0 if error */
     FILE* inner = 0;

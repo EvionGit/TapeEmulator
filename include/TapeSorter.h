@@ -14,10 +14,10 @@ private:
     bool last_is_min; // flag for fetching the last element in a temp file without rewinding
 
     Tape* input, * output; // pointers to the I/O tapes
-    int max_elements; // max elements saved in memory at the same time
+    uint32_t max_elements; // max elements saved in memory at the same time
 
 public:
-    TapeSorter(Tape* input, Tape* output, std::map<std::string, std::string>* conf = 0);
+    TapeSorter(Tape* input, Tape* output, std::map<std::string, std::string>& conf);
    
     /* sort elements from INPUT to OUTPUT */
     size_t sort();

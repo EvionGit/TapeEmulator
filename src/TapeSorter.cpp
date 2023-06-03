@@ -1,31 +1,32 @@
-#include "TapeSorter.h"
+#include "../include/TapeSorter.h"
 
-TapeSorter::TapeSorter(Tape* input, Tape* output, std::map<std::string, std::string>* conf) : cur_tmp(0),
+TapeSorter::TapeSorter(Tape* input, Tape* output, std::map<std::string, std::string>& conf) : cur_tmp(0),
                                                                                                   last_is_min(true),
-                                                                                                  max_elements(-1)
+                                                                                                  max_elements(UINT32_MAX)
 {
     this->input = input;
     this->output = output;
 
-    if (conf)
+    if (!conf.empty())
     {
         /* set restrictive using elements in memory */
-        int elems = atoi(conf->at("MAX_ELEM").c_str());
+        int elems = atoi(conf.at("MAX_ELEM").c_str());
         max_elements = elems >= 0 ? elems : UINT32_MAX;
     }
 
     /* create tmp files */
-    tmps[0] = Tape::open_tape("tmp1.txt", "w+", conf);
-    tmps[1] = Tape::open_tape("tmp2.txt", "w+", conf);
+    tmps[0] = Tape::open_tape("/tmp/tape_sorter_tmp1", "w+", conf);
+    tmps[1] = Tape::open_tape("/tmp/tape_sorter_tmp2", "w+", conf);
     tmp_size[0] = 0;
     tmp_size[1] = 0;
-
 }
 
 size_t TapeSorter::sort()
 {
     /* sorts elements in the tree and saves data to a tmp file then merges temp files */
     /* MERGING SORT (N logN ) */
+    if(!input || !output)
+        return 0;
 
     std::multiset<int> tree;
 
